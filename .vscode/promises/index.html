@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promises | JSRaiz</title>
+</head>
+
+<body>
+    <script>
+        console.log('Primeiro')
+
+        setTimeout(function () {
+            console.log('Segundo')
+        }, 0)
+        console.log('Terceiro')
+        console.log('Quarto')
+        setTimeout(function () {
+            console.log('Meio')
+        }, 0)
+        console.log('Quinto')
+
+        function promiseTrabalhada() {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    Promise.resolve('Teste')
+                }, 1000)
+            })
+        }
+
+        promiseTrabalhada().then(function (message) {
+            console.log(message)
+        })
+        /*
+        PENDENTE
+        REALIZADA
+        REJEITADA
+        ESTABELECIDA
+        */
+        function jaRealizada() {
+            return Promise.resolve('01001000')
+        }
+
+        function jaRejeitada() {
+            return Promise.reject('Erro na promise')
+        }
+
+        jaRejeitada().catch(function (error) {
+            console.log('Promise rejeitada', error)
+        })
+
+        jaRealizada()
+            .then(function (cep) {
+                return window
+                    .fetch('https://viacep.com.br/ws/' + cep + '/json/')
+            })
+            .then(function (data) {
+                return data.json()
+            })
+            .then(function() {
+                return jaRejeitada()
+            })
+            .then(function (endereco) {
+                console.log(endereco)
+            })
+            .catch(function () {
+                console.log('Aconteceu um erro')
+            })
+
+    </script>
+
+</body>
+
+</html>
